@@ -215,9 +215,9 @@ fun trm_to_trm_w_prnt (ctxt:Proof.context) (trm:term) =
       | trm_to_trm_w_prnt' (Abs   _) (Abs (trip as (name, typ, subtrm))) =
         let
           (*Note that Term.dest_abs replaces the outermost (Bound i) with a free variable.*)
-          val (_, abs_free_subtrm) = Term.dest_abs trip                       : (string * term);
-          val print                = trm_to_string' (Abs trip)                : string;
-          val subtrm_w_print       = trm_to_trm_w_prnt' subtrm abs_free_subtrm: trm_w_prnt;
+          val ((_, abs_free_subtrm), _) = Variable.dest_abs (Abs trip) ctxt        : ((string * typ) * term) * Proof.context;
+          val print                     = trm_to_string' (Abs trip)                : string;
+          val subtrm_w_print            = trm_to_trm_w_prnt' subtrm abs_free_subtrm: trm_w_prnt;
         in
           L_Prnt (name, typ, subtrm_w_print, print)
         end
